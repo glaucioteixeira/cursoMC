@@ -1,7 +1,16 @@
-package br.com.cenarioesolucao.cursoMC.domain;
+package br.com.cenarioesolucao.cursoMC.domains;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+@Entity
 public class Categoria implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -9,26 +18,39 @@ public class Categoria implements Serializable {
 	/**
 	 * Atributos
 	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String descricao;
+	
+	@ManyToMany(mappedBy = "categorias")
+	private List<Produto> produtos = new ArrayList<>();
 	
 	
 	/**
 	 * Construtores
 	 */
-	public Categoria() {
-		
-	}
 	public Categoria(Integer id, String descricao) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
 	}
+	public Categoria() {
+		
+	}
+	
 	
 	/**
 	 * Getters and Setters
 	 * @return
 	 */
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
