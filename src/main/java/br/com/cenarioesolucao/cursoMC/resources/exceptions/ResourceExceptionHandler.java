@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -30,4 +32,23 @@ public class ResourceExceptionHandler {
 		
 		return ResponseEntity.status(status).body(body);
 	}
+	
+	// Exceções lançadas em função da validação do Bean Validation 
+	@ExceptionHandler(MethodArgumentNotValidException.class) // Essa exceção pertence ao framework
+	public ResponseEntity<StandardError> argumentoMetodoNaoValidoExcecao(MethodArgumentNotValidException e,HttpServletRequest request) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		
+		// ValidationError body = new ValidationError(status.value(), e.getMessage(), System.currentTimeMillis());
+		ValidationError body = new ValidationError(status.value(), "Error de validação!", System.currentTimeMillis());
+		
+		/*
+		 * Percorre a lista de erros gerados pela exceção e para cada error será gerado o objeto FieldMessage
+		 */
+		for (FieldError x : e.getBindingResult().getFieldErrors()) {
+			body.addError(x.getField(), x.getDefaultMessage());
+		}
+		
+		return ResponseEntity.status(status).body(body);
+	}
+	
 }

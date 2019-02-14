@@ -42,6 +42,14 @@ public class ItemPedido implements Serializable {
 	}
 	
 	/**
+	 * Métodos
+	 * Obs.: Nome do metodo precisa começar com o prefixo get para ser serializado pelo Json.
+	 */
+	public double getSubTotal() {
+		return (preco - desconto) * quantidade;
+	}
+	
+	/**
 	 * Getters and Setters
 	 * @return
 	 */
@@ -49,9 +57,15 @@ public class ItemPedido implements Serializable {
 	public Pedido getPedido() {
 		return this.id.getPedido();
 	}
+	public void setPedido(Pedido pedido) {
+		this.id.setPedido(pedido);
+	}
 	
 	public Produto getProduto() {
 		return this.id.getProduto();
+	}
+	public void setProduto(Produto produto) {
+		this.id.setProduto(produto);
 	}
 	
 	

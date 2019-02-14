@@ -65,6 +65,18 @@ public class Pedido implements Serializable {
 		
 	}
 	
+	/**
+	 * Métodos
+	 * Obs.: Nome do metodo precisa começar com o prefixo get para ser serializado pelo Json.
+	 */
+	public double getValorTotal() {
+		double soma = 0.0;
+		for (ItemPedido itemPedido : itensPedidos) {
+			soma = soma + itemPedido.getSubTotal();
+		}
+		
+		return soma;
+	}
 	
 	/**
 	 * Getters and Setters
