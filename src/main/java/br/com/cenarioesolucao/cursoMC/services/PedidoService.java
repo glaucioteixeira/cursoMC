@@ -12,7 +12,6 @@ import br.com.cenarioesolucao.cursoMC.domains.ItemPedido;
 import br.com.cenarioesolucao.cursoMC.domains.PagamentoComBoleto;
 import br.com.cenarioesolucao.cursoMC.domains.Pedido;
 import br.com.cenarioesolucao.cursoMC.domains.enums.EstadoPagamento;
-import br.com.cenarioesolucao.cursoMC.repositories.ClienteRepository;
 import br.com.cenarioesolucao.cursoMC.repositories.ItemPedidoRepository;
 import br.com.cenarioesolucao.cursoMC.repositories.PagamentoRepository;
 import br.com.cenarioesolucao.cursoMC.repositories.PedidoRepository;
@@ -74,8 +73,9 @@ public class PedidoService {
 		
 		itemPedidoRepo.saveAll(entity.getItensPedidos());
 		
-		emailService.emailConfirmacaoPedido(entity);
 		//System.out.println(entity);
+		//emailService.emailConfirmacaoPedido(entity); // Envia em texto plano
+		emailService.emailConfirmacaoPedidoHtml(entity); // Envia em HTML
 		
 		return entity;
 	}

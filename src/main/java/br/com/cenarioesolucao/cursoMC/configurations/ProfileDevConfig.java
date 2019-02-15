@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import br.com.cenarioesolucao.cursoMC.services.DatabaseService;
+import br.com.cenarioesolucao.cursoMC.services.EmailService;
+import br.com.cenarioesolucao.cursoMC.services.EmailSmtpService;
 
 @Configuration
 @Profile("dev")
@@ -38,6 +40,15 @@ public class ProfileDevConfig {
 		databaseService.instantiateDatabaseTest();
 		
 		return true;
+	}
+	
+	/**
+	 * Método :: Retorna uma instancia da interface EmailService como EmailSmtpService
+	 * @return
+	 */
+	@Bean
+	public EmailService emailService() {
+		return new EmailSmtpService();
 	}
 
 }
