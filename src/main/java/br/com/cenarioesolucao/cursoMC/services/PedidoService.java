@@ -12,6 +12,7 @@ import br.com.cenarioesolucao.cursoMC.domains.ItemPedido;
 import br.com.cenarioesolucao.cursoMC.domains.PagamentoComBoleto;
 import br.com.cenarioesolucao.cursoMC.domains.Pedido;
 import br.com.cenarioesolucao.cursoMC.domains.enums.EstadoPagamento;
+import br.com.cenarioesolucao.cursoMC.repositories.ClienteRepository;
 import br.com.cenarioesolucao.cursoMC.repositories.ItemPedidoRepository;
 import br.com.cenarioesolucao.cursoMC.repositories.PagamentoRepository;
 import br.com.cenarioesolucao.cursoMC.repositories.PedidoRepository;
@@ -28,9 +29,13 @@ public class PedidoService {
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepo;
 	@Autowired
+	private ClienteService clienteService;
+	@Autowired
 	private ProdutoService produtoService;
 	@Autowired
 	private BoletoService boletoService;
+	@Autowired
+	private EmailService emailService;
 	
 	
 	public Pedido buscarId(Integer id) {
@@ -43,6 +48,9 @@ public class PedidoService {
 	@Transactional
 	public Pedido guardarEntidade(Pedido entity) {
 		entity.setId(null);
+		
+		entity.setCliente(clienteService.buscarId(entity.getCliente().getId()));
+		
 		entity.setInstante(new Date());
 		entity.getPagamento().setEstadoPagamento(EstadoPagamento.PENDENTE);
 		entity.getPagamento().setPedido(entity);
@@ -58,12 +66,18 @@ public class PedidoService {
 		for (ItemPedido itemPedido : entity.getItensPedidos()) {
 			itemPedido.setDesconto(0.0);
 			
-			itemPedido.setPreco(produtoService.buscarId(itemPedido.getProduto().getId()).getPreco());
+			itemPedido.setProduto(produtoService.buscarId(itemPedido.getProduto().getId()));
+			
+			itemPedido.setPreco(itemPedido.getProduto().getPreco());
 			itemPedido.setPedido(entity);
 		}
 		
 		itemPedidoRepo.saveAll(entity.getItensPedidos());
 		
+		emailService.emailConfirmacaoPedido(entity);
+		//System.out.println(entity);
+		
 		return entity;
 	}
+	
 }
