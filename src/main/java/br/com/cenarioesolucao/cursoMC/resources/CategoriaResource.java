@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,7 @@ public class CategoriaResource {
 		return ResponseEntity.ok().body(body);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> guardarEntidade(@Valid @RequestBody CategoriaDTO entityDTO) {
 		Categoria entity = service.fromDTO(entityDTO); // Convertendo de DTO para objeto
@@ -48,6 +50,7 @@ public class CategoriaResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> atualizarEntidade(@Valid @RequestBody CategoriaDTO entityDTO, @PathVariable Integer id) {
 		Categoria entity = service.fromDTO(entityDTO); // Convertendo de DTO para objeto
@@ -58,6 +61,7 @@ public class CategoriaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> removerId(@PathVariable Integer id) {
 		service.removerId(id);

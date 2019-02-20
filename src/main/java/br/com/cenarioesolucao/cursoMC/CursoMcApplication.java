@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class CursoMcApplication implements CommandLineRunner{
+	
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursoMcApplication.class, args);
@@ -13,6 +14,7 @@ public class CursoMcApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
+		
 		
 	}
 

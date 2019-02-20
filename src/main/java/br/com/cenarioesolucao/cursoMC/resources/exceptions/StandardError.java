@@ -9,33 +9,56 @@ public class StandardError implements Serializable {
 	/**
 	 * Atributos
 	 */
+	private Long timestamp;
 	private Integer status;
+	private String error;
 	private String message;
-	private Long timeStamp;
+	private String path;
 	
 	/**
-	 * Construtor
+	 * Construtores
+	 * @param timestamp
 	 * @param status
+	 * @param error
 	 * @param message
-	 * @param timeStamp
+	 * @param path
 	 */
-	public StandardError(Integer status, String message, Long timeStamp) {
+	public StandardError(Long timestamp, Integer status, String error, String message, String path) {
 		super();
+		this.timestamp = timestamp;
 		this.status = status;
+		this.error = error;
 		this.message = message;
-		this.timeStamp = timeStamp;
+		this.path = path;
 	}
 
+	
 	/**
 	 * Getters and Setters
 	 * @return
 	 */
+	public Long getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Long timestamp) {
+		this.timestamp = timestamp;
+	}
+
 	public Integer getStatus() {
 		return status;
 	}
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
 	}
 
 	public String getMessage() {
@@ -46,13 +69,15 @@ public class StandardError implements Serializable {
 		this.message = message;
 	}
 
-	public Long getTimeStamp() {
-		return timeStamp;
+	public String getPath() {
+		return path;
 	}
 
-	public void setTimeStamp(Long timeStamp) {
-		this.timeStamp = timeStamp;
+	public void setPath(String path) {
+		this.path = path;
 	}
+	
+	
 	
 	
 }

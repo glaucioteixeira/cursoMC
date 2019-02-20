@@ -16,5 +16,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 	
 	@Transactional()
 	Cliente findByEmail(String email); // Assinatura do metodo que será implementado automaticamente pelo framework
+
 	
 }

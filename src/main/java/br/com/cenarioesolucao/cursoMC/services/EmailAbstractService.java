@@ -13,6 +13,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import br.com.cenarioesolucao.cursoMC.domains.Cliente;
 import br.com.cenarioesolucao.cursoMC.domains.Pedido;
 
 /**
@@ -81,5 +82,27 @@ public abstract class EmailAbstractService implements EmailService {
 		context.setVariable("pedido", pedido);
 		
 		return templateEngine.process("email/confirmacaoPedido", context);
+	}
+	
+	/**
+	 * Resete de senha
+	 */
+	
+	@Override
+	public void emailNovaSenha(Cliente cliente, String novaSenha) {
+		SimpleMailMessage message = prepareNovaSenha(cliente, novaSenha);
+		enviaEmail(message);
+	}
+
+	protected SimpleMailMessage prepareNovaSenha(Cliente cliente, String novaSenha) {
+		SimpleMailMessage smm = new SimpleMailMessage();
+		
+		smm.setTo(cliente.getEmail());
+		smm.setFrom(this.from);
+		smm.setSubject("Solicitação de nova senha!");
+		smm.setSentDate(new Date(System.currentTimeMillis()));
+		smm.setText("Nova Senha: " + novaSenha);
+		
+		return smm;
 	}
 }

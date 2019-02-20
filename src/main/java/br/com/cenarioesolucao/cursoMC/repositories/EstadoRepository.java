@@ -1,5 +1,9 @@
 package br.com.cenarioesolucao.cursoMC.repositories;
 
+import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +16,6 @@ public interface EstadoRepository extends JpaRepository<Estado, Integer> {
 	 * atributo identificador do objeto, que no cado é o Integer (id). 
 	 */
 	
+	@Transactional
+	public List<Estado> findAllByOrderByNome();
 }

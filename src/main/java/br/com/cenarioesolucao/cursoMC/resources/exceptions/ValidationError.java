@@ -12,17 +12,13 @@ public class ValidationError extends StandardError {
 	 */
 	private List<FieldMessage> listaError = new ArrayList<>();
 	
-	/**
-	 * Construtores
-	 * @param status
-	 * @param message
-	 * @param timeStamp
-	 */
-	public ValidationError(Integer status, String message, Long timeStamp) {
-		super(status, message, timeStamp);
-		
-	}
 	
+	
+	public ValidationError(Long timestamp, Integer status, String error, String message, String path) {
+		super(timestamp, status, error, message, path);
+	}
+
+
 	/**
 	 * Métodos
 	 */

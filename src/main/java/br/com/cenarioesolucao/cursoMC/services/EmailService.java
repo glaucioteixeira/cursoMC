@@ -4,6 +4,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.mail.SimpleMailMessage;
 
+import br.com.cenarioesolucao.cursoMC.domains.Cliente;
 import br.com.cenarioesolucao.cursoMC.domains.Pedido;
 
 /**
@@ -19,6 +20,10 @@ public interface EmailService {
 	 */
 	void emailConfirmacaoPedido(Pedido pedido);
 	void emailConfirmacaoPedidoHtml(Pedido pedido);
+	
+	void emailNovaSenha(Cliente cliente, String novaSenha);
+	
+	
 	
 	/**
 	 * Texto Plano

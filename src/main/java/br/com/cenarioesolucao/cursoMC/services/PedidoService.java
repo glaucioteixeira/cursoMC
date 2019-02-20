@@ -6,8 +6,12 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import br.com.cenarioesolucao.cursoMC.domains.Cliente;
 import br.com.cenarioesolucao.cursoMC.domains.ItemPedido;
 import br.com.cenarioesolucao.cursoMC.domains.PagamentoComBoleto;
 import br.com.cenarioesolucao.cursoMC.domains.Pedido;
@@ -15,6 +19,8 @@ import br.com.cenarioesolucao.cursoMC.domains.enums.EstadoPagamento;
 import br.com.cenarioesolucao.cursoMC.repositories.ItemPedidoRepository;
 import br.com.cenarioesolucao.cursoMC.repositories.PagamentoRepository;
 import br.com.cenarioesolucao.cursoMC.repositories.PedidoRepository;
+import br.com.cenarioesolucao.cursoMC.security.UserSpringSecurity;
+import br.com.cenarioesolucao.cursoMC.services.exceptions.AutorizacaoExcecao;
 import br.com.cenarioesolucao.cursoMC.services.exceptions.ObjetoNaoEncontradoExcecao;
 
 @Service
@@ -78,6 +84,19 @@ public class PedidoService {
 		emailService.emailConfirmacaoPedidoHtml(entity); // Envia em HTML
 		
 		return entity;
+	}
+	
+	public Page<Pedido> buscarPaginado(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		
+		UserSpringSecurity userSpringSecurity = UserService.authenticated();
+		if (userSpringSecurity == null) {
+			throw new AutorizacaoExcecao("Acesso negado!");
+		}
+		
+		Cliente cliente = clienteService.buscarId(userSpringSecurity.getId());
+		
+		return pedidoRepo.findByCliente(cliente, pageRequest);
 	}
 	
 }
