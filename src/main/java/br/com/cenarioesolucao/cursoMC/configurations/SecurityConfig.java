@@ -10,6 +10,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -68,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	 * Vetor de string para definir quais os caminhos 
 	 * estarão liberados para o Swagger UI.
 	 */
-	private static final String[] AUTH_WHITELIST = {
+	private static final String[] PUBLIC_MATCHERS_SWAGGER = {
         "/swagger-resources/**",
         "/swagger-ui.html",
         "/v2/api-docs",
@@ -79,31 +80,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	/*
 	 * Libera acessos aos caminhos do Swagger
 	 */
-//	@Override
-//	public void configure(WebSecurity web) {
-//		web.ignoring().antMatchers(
-//				"/v2/api-docs", 
-//				"/configuration/ui", 
-//				"swagger-resources/**", 
-//				"/configuration/**", 
-//				"/swagger-ui.html", 
-//				"/webjars/**");
-//	}
+	@Override
+	public void configure(WebSecurity web) {
+		web.ignoring().antMatchers(
+				"/v2/api-docs", 
+				"/configuration/ui", 
+				"swagger-resources/**", 
+				"/configuration/**", 
+				"/swagger-ui.html", 
+				"/webjars/**");
+	}
 	
 	
 	protected void configure(HttpSecurity http) throws Exception {
-		
-		/**
-		 * Configuração especifica para liberar o acesso ao Swagger-UI [ Perfil test || dev ]
-		 */
-		if (Arrays.asList(environment.getActiveProfiles()).contains("test") || 
-				Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
-			http.authorizeRequests()
-			.antMatchers(AUTH_WHITELIST).permitAll()
-	        .antMatchers("/**/*").denyAll();
-		}
-		
-		
 		/**
 		 * Configuração especifica para liberar o acesso ao H2
 		 */
@@ -125,6 +114,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
 			.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
+			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_SWAGGER).permitAll()
 			.anyRequest().authenticated();
 		
 		/**

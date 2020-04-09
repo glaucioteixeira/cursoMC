@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
+	@Value("${swagger.enable}")
+	private boolean externallyConfiguredFlag;
 	
 	private final ResponseMessage m201 = customMessage01();
 	private final ResponseMessage m204put = simpleMessage(204, "Atualização OK!");
@@ -52,12 +55,16 @@ public class SwaggerConfig {
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2)
+				.enable(externallyConfiguredFlag)
+				
 				.useDefaultResponseMessages(false)
 				
 				.globalResponseMessage(RequestMethod.GET, Arrays.asList(m403, m404, m500))
 				.globalResponseMessage(RequestMethod.POST, Arrays.asList(m201, m403, m422, m500))
 				.globalResponseMessage(RequestMethod.PUT, Arrays.asList(m204put, m403, m404, m422, m500))
 				.globalResponseMessage(RequestMethod.DELETE, Arrays.asList(m204del, m403, m404, m500))
+				
+//				.host("http://localhost:8081/api/")
 				
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("br.com.cenarioesolucao.cursoMC.resources"))

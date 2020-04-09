@@ -17,15 +17,19 @@ import br.com.cenarioesolucao.cursoMC.domains.Categoria;
 import br.com.cenarioesolucao.cursoMC.repositories.CategoriaRepository;
 import br.com.cenarioesolucao.cursoMC.services.exceptions.ObjetoNaoEncontradoExcecao;
 import br.com.cenarioesolucao.cursoMC.services.exceptions.ViolacaoIntegridadeDadoExcecao;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class CategoriaService {
-
+	
 	// Declara a dependencia ao objeto repository
 	@Autowired
 	private CategoriaRepository categoriaRepo;
 	
 	public Categoria buscarId(Integer id) {
+		log.info("");
+		
 		Optional<Categoria> obj = categoriaRepo.findById(id);
 		
 		return obj.orElseThrow(() -> new ObjetoNaoEncontradoExcecao("Objeto não encontrado! Id: " + id 

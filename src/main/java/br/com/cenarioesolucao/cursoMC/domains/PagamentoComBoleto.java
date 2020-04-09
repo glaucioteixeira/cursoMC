@@ -8,9 +8,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import br.com.cenarioesolucao.cursoMC.domains.enums.EstadoPagamento;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @JsonTypeName("pagamentoComBoleto")
+@NoArgsConstructor @ToString 
 public class PagamentoComBoleto extends Pagamento {
 	private static final long serialVersionUID = 1L;
 	
@@ -18,10 +24,10 @@ public class PagamentoComBoleto extends Pagamento {
 	 * Atributos
 	 */
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	private Date dataVencimento;
+	@Getter @Setter private Date dataVencimento;
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	private Date dataPagamento;
+	@Getter @Setter private Date dataPagamento;
 	
 	/**
 	 * Construtores
@@ -35,26 +41,24 @@ public class PagamentoComBoleto extends Pagamento {
 		this.dataPagamento = dataPagamento;
 		this.dataVencimento = dataVencimento;
 	}
-	public PagamentoComBoleto() {
-		
-	}
+	
 	
 	/**
 	 * Getters and Setters
 	 * @return
 	 */
-	public Date getDataVencimento() {
-		return dataVencimento;
-	}
-	public void setDataVencimento(Date dataVencimento) {
-		this.dataVencimento = dataVencimento;
-	}
-	public Date getDataPagamento() {
-		return dataPagamento;
-	}
-	public void setDataPagamento(Date dataPagamento) {
-		this.dataPagamento = dataPagamento;
-	}
+//	public Date getDataVencimento() {
+//		return dataVencimento;
+//	}
+//	public void setDataVencimento(Date dataVencimento) {
+//		this.dataVencimento = dataVencimento;
+//	}
+//	public Date getDataPagamento() {
+//		return dataPagamento;
+//	}
+//	public void setDataPagamento(Date dataPagamento) {
+//		this.dataPagamento = dataPagamento;
+//	}
 	
 	
 }
