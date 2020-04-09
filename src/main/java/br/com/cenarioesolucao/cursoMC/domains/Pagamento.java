@@ -15,9 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import br.com.cenarioesolucao.cursoMC.domains.enums.EstadoPagamento;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @Entity
