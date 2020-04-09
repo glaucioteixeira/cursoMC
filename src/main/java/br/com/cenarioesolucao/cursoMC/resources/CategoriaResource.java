@@ -21,6 +21,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.com.cenarioesolucao.cursoMC.DTO.CategoriaDTO;
 import br.com.cenarioesolucao.cursoMC.domains.Categoria;
 import br.com.cenarioesolucao.cursoMC.services.CategoriaService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/categorias")
@@ -29,6 +32,7 @@ public class CategoriaResource {
 	@Autowired
 	private CategoriaService service;
 
+	@ApiOperation(value="Busca registro por id")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Categoria> buscarId(@PathVariable Integer id) {
 		Categoria body = service.buscarId(id);
@@ -36,6 +40,7 @@ public class CategoriaResource {
 		return ResponseEntity.ok().body(body);
 	}
 	
+	@ApiOperation(value="Grava registros pelo contexto do DTO")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> guardarEntidade(@Valid @RequestBody CategoriaDTO entityDTO) {
@@ -50,6 +55,7 @@ public class CategoriaResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@ApiOperation(value="Atualiza registro por id")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> atualizarEntidade(@Valid @RequestBody CategoriaDTO entityDTO, @PathVariable Integer id) {
@@ -61,6 +67,11 @@ public class CategoriaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@ApiOperation(value="Remove registro por id")
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "Não é possivel excluir uma categoria que possui produtos!"),
+			@ApiResponse(code = 404, message = "Código inexistente!")
+	})
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> removerId(@PathVariable Integer id) {
@@ -69,6 +80,7 @@ public class CategoriaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@ApiOperation(value="Busca todos os registros")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<CategoriaDTO>> buscarTodas() {
 		List<Categoria> body = service.buscarTodas();
@@ -78,6 +90,7 @@ public class CategoriaResource {
 		return ResponseEntity.ok().body(bodyDTO);
 	}
 	
+	@ApiOperation(value="Busca todos os registros com paginação")
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public ResponseEntity<Page<CategoriaDTO>> buscarPaginado(@RequestParam(value = "page", defaultValue = "0") Integer page, 
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage, 

@@ -64,7 +64,45 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		"/authentication/forgot/**"
 	};
 	
+	/*
+	 * Vetor de string para definir quais os caminhos 
+	 * estarão liberados para o Swagger UI.
+	 */
+	private static final String[] AUTH_WHITELIST = {
+        "/swagger-resources/**",
+        "/swagger-ui.html",
+        "/v2/api-docs",
+        "/webjars/**"
+    };
+	
+	
+	/*
+	 * Libera acessos aos caminhos do Swagger
+	 */
+//	@Override
+//	public void configure(WebSecurity web) {
+//		web.ignoring().antMatchers(
+//				"/v2/api-docs", 
+//				"/configuration/ui", 
+//				"swagger-resources/**", 
+//				"/configuration/**", 
+//				"/swagger-ui.html", 
+//				"/webjars/**");
+//	}
+	
+	
 	protected void configure(HttpSecurity http) throws Exception {
+		
+		/**
+		 * Configuração especifica para liberar o acesso ao Swagger-UI [ Perfil test || dev ]
+		 */
+		if (Arrays.asList(environment.getActiveProfiles()).contains("test") || 
+				Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
+			http.authorizeRequests()
+			.antMatchers(AUTH_WHITELIST).permitAll()
+	        .antMatchers("/**/*").denyAll();
+		}
+		
 		
 		/**
 		 * Configuração especifica para liberar o acesso ao H2
